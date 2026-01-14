@@ -80,6 +80,7 @@ The application allows switching the underlying database provider without changi
     
 
 **Code First Implementation:** The `AppDbContext` class includes a data seeding method (`OnModelCreating`) that automatically populates the database with initial testing data upon application startup (`EnsureCreated`).
+<img width="1077" height="426" alt="Pasted image 20260114134716" src="https://github.com/user-attachments/assets/c83900a2-028b-48c1-aeb8-4228a6c4a36a" />
 
 ---
 
@@ -110,6 +111,9 @@ The search engine utilizes **LINQ** to build a dynamic SQL query. It performs **
     
 
 ---
+
+<img width="1077" height="426" alt="Pasted image 20260114134716" src="https://github.com/user-attachments/assets/b1449c40-be8b-4ba5-9256-0b78be942752" />
+
 
 ## 6. How to Run
 
