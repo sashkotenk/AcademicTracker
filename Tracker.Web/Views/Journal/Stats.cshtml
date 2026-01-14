@@ -1,0 +1,49 @@
+﻿@model double
+
+@{
+    ViewData["Title"] = "Group Statistics";
+
+    // Визначаємо колір залежно від оцінки
+    string alertClass = "alert-secondary";
+    string icon = "📊";
+
+    if (Model >= 90)
+    {
+        alertClass = "alert-success"; // Зелений
+        icon = "🏆";
+    }
+    else if (Model >= 60)
+    {
+        alertClass = "alert-warning"; // Жовтий
+        icon = "📈";
+    }
+    else if (Model > 0)
+    {
+        alertClass = "alert-danger"; // Червоний
+        icon = "⚠️";
+    }
+}
+
+<div class="container mt-5 text-center">
+    <div class="card shadow border-0" style="max-width: 500px; margin: 0 auto;">
+        <div class="card-body p-5">
+            <h2 class="card-title text-muted text-uppercase fs-5 mb-4">Class Performance</h2>
+
+            <div class="display-1 mb-3">@icon</div>
+
+            <h1 class="display-3 fw-bold mb-3">@Model.ToString("F2")</h1>
+
+            <div class="alert @alertClass" role="alert">
+                <strong>Average Score Calculation</strong>
+            </div>
+
+            <p class="text-muted mt-4">
+                This metric represents the arithmetic mean of all student grades currently registered in the system.
+            </p>
+
+            <div class="mt-4">
+                <a asp-action="Index" class="btn btn-primary px-4">View Journal</a>
+            </div>
+        </div>
+    </div>
+</div>
