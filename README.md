@@ -2,6 +2,9 @@
 
 The application, titled **"Academic Tracker Pro"**, is an EdTech solution designed to monitor student performance in a distance learning environment. It allows for the registration of learners, management of their grades, and real-time calculation of group statistics.
 
+<img width="1918" height="944" alt="Pasted image 20260114122958" src="https://github.com/user-attachments/assets/270e7f32-1f5a-4c11-9f01-fa114800aee0" />
+
+
 ## Technical Requirements Fulfillment
 
 According to the assignment requirements:
