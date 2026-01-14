@@ -1,44 +1,128 @@
-# Laboratory Work 1: Academic Tracker
+# Laboratory Work 8:
 
-The application, titled **"Academic Tracker Pro"**, is an EdTech solution designed to monitor student performance in a distance learning environment. It allows for the registration of learners, management of their grades, and real-time calculation of group statistics.
+## 1. Project Overview
 
-## Technical Requirements Fulfillment
+**Topic:** Integration of Modern Frontend Frameworks.
 
-According to the assignment requirements:
+**Goal:** To expand the "Academic Tracker" ecosystem by implementing a Single Page Application (SPA) web client using the **React** framework. This client serves as a modern web interface for the existing .NET Web API.
 
-- **Application Type**: Developed as a **.NET Core desktop application** (Windows Forms).
+## 2. Technology Stack
+
+- **Framework:** React 18 (Functional Components + Hooks).
     
-- **Testing**: Includes **unit tests** implemented with the **xUnit** framework to verify core business logic.
+- **Language:** TypeScript (for type safety and integration with backend models).
     
-- **Architecture**: The solution is divided into three distinct projects to ensure cross-platform compatibility and separation of concerns:
+- **Build Tool:** Vite (for fast hot-module replacement and build optimization).
     
-    - `Tracker.Core`: A Class Library containing business entities and logic.
+- **HTTP Client:** Axios (for communicating with the .NET REST API).
+    
+- **Styling:** Bootstrap 5 / CSS Modules.
+    
+
+## 3. Architecture Changes
+
+The system architecture has been upgraded to a **Headless** model:
+
+- **Backend:** The existing .NET API (`Tracker.API`) now acts purely as a data provider.
+    
+- **Frontend:** A new independent project `Tracker.WebClient` handles the UI/UX logic.
+    
+- **Communication:** The React client consumes data via HTTP/JSON.
+    
+- **CORS Configuration:** Updated the ASP.NET Core backend to allow Cross-Origin Resource Sharing (CORS) requests from the React development server (`http://localhost:5173`).
+    
+
+## 4. Implementation Details
+
+### 4.1. Project Structure
+
+The frontend project structure follows standard React best practices:
+
+Plaintext
+
+```
+src/
+├── components/       # Reusable UI components (Navbar, Loader)
+├── services/         # API communication logic (ApiService.ts)
+├── models/           # TypeScript interfaces (Student.ts)
+├── pages/            # Main views (HomePage, StudentsPage)
+└── App.tsx           # Main application entry point with Routing
+```
+
+### 4.2. Key Features Implemented
+
+1. **Student List Visualization:**
+    
+    - Created a `StudentsPage` component that fetches data using `useEffect`.
         
-    - `Tracker.Desktop`: The graphical user interface (GUI) layer.
+    - Implemented a stateful variable `students` using `useState` to store the API response.
         
-    - `Tracker.Tests`: The quality assurance layer for automated testing.
+    - Displayed data in a responsive Bootstrap table.
+        
+2. **Asynchronous Data Fetching:**
+    
+    - Implemented an asynchronous service layer using `Axios`.
+        
+    - Added error handling (try-catch blocks) to manage API connectivity issues.
+        
+    - **Loading State:** Integrated a visual spinner while data is being fetched from the backend.
+        
+3. **Cross-Platform Web Interface:**
+    
+    - The web client works identically on Windows, macOS, and Linux browsers, fulfilling the cross-platform requirement.
         
 
-## Key Features
+## 5. Backend Adjustments (CORS)
 
-- **Learner Management**: Create and store student profiles with unique identifiers (GUIDs).
-    
-- **Grade Validation**: Ensures academic integrity by validating scores within a 0-100 range.
-    
-- **Analytical Statistics**: Automatically calculates the class average score using LINQ queries.
-    
-- **Modern UI**: Built with a responsive Windows Forms layout for enhanced user experience.
-    
+To enable the React app to talk to the .NET API, the following policy was added to `Program.cs` in the API project:
 
-## How to Run
+C#
 
-1. Navigate to the `Tracker.Desktop` directory.
-    
-2. Execute the command: `dotnet run`.
-    
+```
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp",
+        builder => builder
+            .WithOrigins("http://localhost:5173")
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
+// ...
+app.UseCors("AllowReactApp");
+```
 
-## How to Test
+## 6. Deployment & Version Control
 
-1. Navigate to the root solution directory.
+- **Git:** The complete source code, including the new `Tracker.WebClient` directory, has been committed and pushed to the remote repository.
     
-2. Execute the command: `dotnet test`.
+- **Testing:** The application was verified on:
+    
+    - **OS:** Windows 11 (Host) and Linux (Ubuntu via Docker Container).
+        
+    - **Browsers:** Google Chrome and Mozilla Firefox.
+        
+
+## 7. How to Run
+
+1. **Start the Backend API:**
+    
+    Bash
+    
+    ```
+    cd Tracker.Web
+    dotnet run
+    ```
+    
+    _(Ensure API is running on https://localhost:7001)_
+    
+2. **Start the React Client:**
+    
+    Bash
+    
+    ```
+    cd Tracker.WebClient
+    npm install
+    npm run dev
+    ```
+    
+3. **Access:** Open `http://localhost:5173` in your browser.
