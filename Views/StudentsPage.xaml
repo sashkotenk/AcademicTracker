@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Tracker.Mobile.ViewModels"
+             x:Class="Tracker.Mobile.Views.StudentsPage"
+             Title="Academic Tracker">
+
+    <Grid RowDefinitions="Auto, *">
+        <Button Text="Load Data (from API)" 
+                Command="{Binding LoadStudentsCommand}"
+                Margin="10"
+                Grid.Row="0"/>
+
+        <ActivityIndicator IsRunning="{Binding IsBusy}" 
+                           IsVisible="{Binding IsBusy}"
+                           Color="Blue"
+                           HeightRequest="50"
+                           Grid.Row="1"
+                           VerticalOptions="Center" 
+                           HorizontalOptions="Center"/>
+
+        <CollectionView Grid.Row="1" 
+                        ItemsSource="{Binding Students}">
+
+            <CollectionView.Triggers>
+                <DataTrigger TargetType="CollectionView" Binding="{Binding IsBusy}" Value="True">
+                    <Setter Property="IsVisible" Value="False" />
+                </DataTrigger>
+            </CollectionView.Triggers>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Margin="5" Padding="10" BorderColor="Gray">
+                        <VerticalStackLayout>
+                            <Label Text="{Binding FullName}" FontSize="18" FontAttributes="Bold" />
+                            <Label Text="{Binding Email}" FontSize="14" TextColor="Gray" />
+                            <Label Text="{Binding GroupId, StringFormat='Group ID: {0}'}" FontSize="12" />
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>
