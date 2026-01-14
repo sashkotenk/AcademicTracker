@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic; // Підключаємо простір імен для роботи з колекціями (List, Dictionary).
 using System.Linq; // Підключаємо LINQ для зручних операцій над даними (Average, Select тощо).
 
