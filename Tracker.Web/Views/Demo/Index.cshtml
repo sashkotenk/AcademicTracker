@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "API Versioning Demo";
+}
+
+<h2>API Versioning Demonstration</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary text-white">API V1 Data (Simple)</div>
+            <div class="card-body">
+                <button onclick="loadV1()" class="btn btn-sm btn-light mb-2">Load V1</button>
+                <pre id="v1Result" class="bg-light p-2"></pre>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-success text-white">API V2 Data (Extended)</div>
+            <div class="card-body">
+                <button onclick="loadV2()" class="btn btn-sm btn-light mb-2">Load V2</button>
+                <pre id="v2Result" class="bg-light p-2"></pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function loadV1() {
+        const res = await fetch('/api/v1/students');
+        const data = await res.json();
+        document.getElementById('v1Result').innerText = JSON.stringify(data, null, 2);
+    }
+
+    async function loadV2() {
+        const res = await fetch('/api/v2/students');
+        const data = await res.json();
+        document.getElementById('v2Result').innerText = JSON.stringify(data, null, 2);
+    }
+</script>

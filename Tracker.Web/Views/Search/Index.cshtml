@@ -1,0 +1,100 @@
+﻿@model Tracker.Web.Models.SearchViewModel
+
+@{
+    ViewData["Title"] = "Advanced Search";
+}
+
+<div class="container mt-4">
+    <h2>🔍 Advanced Database Search</h2>
+    <p class="text-muted">Search through submissions using multiple DBMS filters.</p>
+
+    <div class="card p-4 mb-4 bg-light shadow-sm">
+        <form asp-controller="Search" asp-action="Index" method="get">
+            <div class="row g-3">
+
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Text Search</label>
+                    <input type="text" name="searchText" value="@Model.SearchText" class="form-control"
+                           placeholder="Student Name (Start) or Work Title (End)..." />
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Filter by Group</label>
+                    <select name="groupId" class="form-select">
+                        <option value="">-- All Groups --</option>
+                        @foreach (var group in Model.Groups)
+                        {
+                            <!option value="@group.Id" @(Model.SelectedGroupId == group.Id ? "selected" : "")>
+                                @group.Name
+                            </!option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label fw-bold">Date From</label>
+                    <input type="date" name="dateFrom" value="@(Model.DateFrom?.ToString("yyyy-MM-dd"))" class="form-control" />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-bold">Date To</label>
+                    <input type="date" name="dateTo" value="@(Model.DateTo?.ToString("yyyy-MM-dd"))" class="form-control" />
+                </div>
+            </div>
+
+            <div class="mt-3 text-end">
+                <a asp-action="Index" class="btn btn-outline-secondary me-2">Reset</a>
+                <button type="submit" class="btn btn-primary px-4">Search Results</button>
+            </div>
+        </form>
+    </div>
+
+    @if (Model.Results.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Student Name</th>
+                        <th>Group</th>
+                        <th>Work Title</th>
+                        <th>Score</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Results)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td class="fw-bold">@item.Student?.FullName</td>
+                            <td><span class="badge bg-info text-dark">@item.Student?.Group?.Name</span></td>
+                            <td>@item.CourseWorkTitle</td>
+                            <td>
+                                @if (item.Score >= 90)
+                                {
+                                    <span class="text-success fw-bold">@item.Score</span>
+                                }
+                                else if (item.Score < 60)
+                                {
+                                    <span class="text-danger fw-bold">@item.Score</span>
+                                }
+                                else
+                                {
+                                    <span>@item.Score</span>
+                                }
+                            </td>
+                            <td>@item.SubmissionDate.ToShortDateString()</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning text-center">
+            No records found matching your criteria.
+        </div>
+    }
+</div>
