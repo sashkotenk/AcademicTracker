@@ -1,4 +1,4 @@
-﻿namespace Tracker.Desktop
+namespace Tracker.Desktop
 {
     partial class MainDashboard
     {
@@ -29,4 +29,5 @@
             this.Text = "Academic Tracker";
         }
     }
+
 }

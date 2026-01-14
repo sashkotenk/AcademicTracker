@@ -1,4 +1,4 @@
-﻿using Xunit; // Бібліотека для тестування.
+using Xunit; // Бібліотека для тестування.
 using Tracker.Core; // Підключаємо тестовану бібліотеку.
 using System;
 
