@@ -78,6 +78,9 @@ The system integrates **Swagger UI** to visualize and interact with the API reso
 
 ## 4. Infrastructure & Containerization
 
+<img width="1561" height="884" alt="Pasted image 20260114142926" src="https://github.com/user-attachments/assets/8d02ba8d-e8aa-4e6a-9a36-28ad413e1c2d" />
+
+
 To fulfill the multi-DBMS requirement, the project utilizes **Docker Compose** to orchestrate database services.
 
 **File:** `docker-compose.yml`
@@ -104,6 +107,9 @@ This setup allows instant switching between database providers in `appsettings.j
 ---
 
 ## 5. Integration Testing Strategy
+
+<img width="1071" height="363" alt="Pasted image 20260114143411" src="https://github.com/user-attachments/assets/c58e087f-3a83-4bbf-a487-b239dd4c73f5" />
+
 
 Automated integration tests are implemented using the **Jest** framework to verify system behavior from an external client perspective (Black-box testing).
 
