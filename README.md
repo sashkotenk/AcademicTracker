@@ -1,4 +1,4 @@
-# Laboratory Work 1: Academic Tracker
+# Laboratory Work 3: Academic Tracker
 
 The application, titled **"Academic Tracker Pro"**, is an EdTech solution designed to monitor student performance in a distance learning environment. It allows for the registration of learners, management of their grades, and real-time calculation of group statistics.
 
