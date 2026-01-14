@@ -1,44 +1,151 @@
-# Laboratory Work 1: Academic Tracker
+# Laboratory Work 4:
 
-The application, titled **"Academic Tracker Pro"**, is an EdTech solution designed to monitor student performance in a distance learning environment. It allows for the registration of learners, management of their grades, and real-time calculation of group statistics.
+## 1. Project Overview
 
-## Technical Requirements Fulfillment
+This application is a cross-platform web system built on **ASP.NET Core MVC**. It implements an Object-Relational Mapping (ORM) layer using **Entity Framework Core (EF Core)** with a **Code First** approach. The system supports dynamic switching between four different Database Management Systems (DBMS) and provides advanced search capabilities with complex data filtering.
 
-According to the assignment requirements:
+## 2. Technology Stack
 
-- **Application Type**: Developed as a **.NET Core desktop application** (Windows Forms).
+- **Framework:** .NET 8.0 (ASP.NET Core MVC)
     
-- **Testing**: Includes **unit tests** implemented with the **xUnit** framework to verify core business logic.
+- **ORM:** Entity Framework Core
     
-- **Architecture**: The solution is divided into three distinct projects to ensure cross-platform compatibility and separation of concerns:
+- **Authentication:** OAuth2 (via Auth0)
     
-    - `Tracker.Core`: A Class Library containing business entities and logic.
+- **Supported DBMS:**
+    
+    1. SQLite
         
-    - `Tracker.Desktop`: The graphical user interface (GUI) layer.
+    2. PostgreSQL
         
-    - `Tracker.Tests`: The quality assurance layer for automated testing.
+    3. Microsoft SQL Server
+        
+    4. In-Memory Database
         
 
-## Key Features
+---
 
-- **Learner Management**: Create and store student profiles with unique identifiers (GUIDs).
+## 3. Database Architecture (Data Models)
+
+The database schema consists of three normalized entities with the following relationships:
+
+### Entities
+
+1. **Group**
     
-- **Grade Validation**: Ensures academic integrity by validating scores within a 0-100 range.
+    - Primary Key: `Id`
+        
+    - Fields: `Name`
+        
+    - Relationship: One-to-Many with `Student`.
+        
+2. **Student**
     
-- **Analytical Statistics**: Automatically calculates the class average score using LINQ queries.
+    - Primary Key: `Id`
+        
+    - Fields: `FullName`, `Email`.
+        
+    - Foreign Key: `GroupId`.
+        
+    - Relationship: Many-to-One with `Group`, One-to-Many with `Submission`.
+        
+3. **Submission** (Central Table)
     
-- **Modern UI**: Built with a responsive Windows Forms layout for enhanced user experience.
+    - Primary Key: `Id`
+        
+    - Fields: `CourseWorkTitle`, `Score`, `SubmissionDate`.
+        
+    - Foreign Key: `StudentId`.
+        
+    - Relationship: Many-to-One with `Student`.
+        
+
+---
+
+## 4. Multi-DBMS Configuration
+
+The application allows switching the underlying database provider without changing the code logic. This is implemented via the `appsettings.json` configuration file.
+
+**Configuration Mechanism:** The `Program.cs` file reads the `Database:Provider` value and initializes the corresponding DbContext options using a switch-case logic.
+
+**Supported Providers:**
+
+- `"Sqlite"`: Uses `Microsoft.EntityFrameworkCore.Sqlite`.
+    
+- `"Postgres"`: Uses `Npgsql.EntityFrameworkCore.PostgreSQL`.
+    
+- `"SqlServer"`: Uses `Microsoft.EntityFrameworkCore.SqlServer`.
+    
+- `"InMemory"`: Uses `Microsoft.EntityFrameworkCore.InMemory`.
     
 
-## How to Run
+**Code First Implementation:** The `AppDbContext` class includes a data seeding method (`OnModelCreating`) that automatically populates the database with initial testing data upon application startup (`EnsureCreated`).
 
-1. Navigate to the `Tracker.Desktop` directory.
+---
+
+## 5. Advanced Search Functionality
+
+The `SearchController` implements a complex search query that filters the central table (`Submission`) based on multiple criteria.
+
+### Query Logic
+
+The search engine utilizes **LINQ** to build a dynamic SQL query. It performs **two JOIN operations** (Eager Loading) to retrieve related data:
+
+1. `Submission` JOIN `Student`
     
-2. Execute the command: `dotnet run`.
+2. `Student` JOIN `Group`
     
 
-## How to Test
+### Filter Specifications
 
-1. Navigate to the root solution directory.
+1. **Text Search:** Filters records where:
     
-2. Execute the command: `dotnet test`.
+    - `Student.FullName` **starts with** the query string.
+        
+    - OR `CourseWorkTitle` **ends with** the query string.
+        
+2. **Date Range:** Filters records by `SubmissionDate` (From/To).
+    
+3. **List Filtering:** Filters records by exact match of `GroupId` selected from a dropdown list.
+    
+
+---
+
+## 6. How to Run
+
+### Prerequisites
+
+- .NET 8.0 SDK
+    
+- (Optional) Docker for running PostgreSQL or SQL Server instances.
+    
+
+### Setup Instructions
+
+1. **Clone Repository:**
+    
+    Bash
+    
+    ```
+    git clone <repository_url>
+    cd AcademicTrackerLab/Tracker.Web
+    ```
+    
+2. **Configure Database:** Open `appsettings.json` and set the desired provider:
+    
+    JSON
+    
+    ```
+    "Database": {
+      "Provider": "Sqlite", 
+      "ConnectionStrings": { ... }
+    }
+    ```
+    
+3. **Run Application:**
+    
+    Bash
+    
+    ```
+    dotnet run
+    ```
